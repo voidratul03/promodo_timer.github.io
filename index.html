@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pomodoro Timer</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f0f0f0;
+    }
+
+    #timer-container {
+      text-align: center;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      background-color: #fff;
+    }
+
+    #timer {
+      font-size: 2em;
+      margin-bottom: 20px;
+    }
+
+    #start-btn, #reset-btn {
+      padding: 10px 20px;
+      margin: 0 10px;
+      background-color: #4285f4;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #reset-btn {
+      background-color: #db4437;
+    }
+  </style>
+</head>
+<body>
+
+<div id="timer-container">
+  <div id="timer">25:00</div>
+  <button id="start-btn">Start</button>
+  <button id="reset-btn">Reset</button>
+</div>
+
+<script>
+  let timer;
+  let minutes = 25;
+  let seconds = 0;
+  let isRunning = false;
+
+  const timerDisplay = document.getElementById('timer');
+  const startBtn = document.getElementById('start-btn');
+  const resetBtn = document.getElementById('reset-btn');
+
+  startBtn.addEventListener('click', toggleTimer);
+  resetBtn.addEventListener('click', resetTimer);
+
+  function toggleTimer() {
+    if (isRunning) {
+      clearInterval(timer);
+      isRunning = false;
+      startBtn.textContent = 'Resume';
+    } else {
+      timer = setInterval(updateTimer, 1000);
+      isRunning = true;
+      startBtn.textContent = 'Pause';
+    }
+  }
+
+  function updateTimer() {
+    if (minutes === 0 && seconds === 0) {
+      clearInterval(timer);
+      isRunning = false;
+      startBtn.textContent = 'Start';
+      alert('Pomodoro completed! Take a break.');
+    } else {
+      if (seconds === 0) {
+        minutes--;
+        seconds = 59;
+      } else {
+        seconds--;
+      }
+
+      updateDisplay();
+    }
+  }
+
+  function resetTimer() {
+    clearInterval(timer);
+    minutes = 25;
+    seconds = 0;
+    isRunning = false;
+    updateDisplay();
+    startBtn.textContent = 'Start';
+  }
+
+  function updateDisplay() {
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+    const formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
+    timerDisplay.textContent = `${formattedMinutes}:${formattedSeconds}`;
+  }
+</script>
+
+</body>
+</html>
